@@ -1,0 +1,50 @@
+" بداية تثبيت الإضافات
+call plug#begin('~/.vim/plugged')
+" مخططات الألوان
+Plug 'morhetz/gruvbox'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'joshdick/onedark.vim'
+Plug 'tomasr/molokai'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'kyazdani42/nvim-web-devicons', { 'opt': 1 }
+" تحسينات الواجهة
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ryanoasis/vim-devicons'
+Plug 'mhinz/vim-signify'
+Plug 'preservim/nerdtree'
+Plug 'puremourning/vimspector'
+" Vimspector
+Plug 'puremourning/vimspector'
+
+" إضافات أخرى
+call plug#end()
+
+" إعدادات عامة
+syntax enable
+set termguicolors
+syntax on
+set background=dark
+colorscheme gruvbox
+set number
+set cursorline
+set showmatch
+set colorcolumn=80
+set list
+set listchars=tab:»·,trail:·,extends:>,precedes:<
+
+" إعدادات Vimspector
+let g:vimspector_enable_mappings = 'HUMAN'
+let g:vimspector_install_gadgets = [ 'netcoredbg' ]
+let g:vimspector_enable_winbar = 1
+
+" مفاتيح اختصار Vimspector
+nmap <leader>dd :call vimspector#Launch()<CR>
+nmap <leader>dx :call vimspector#Reset()<CR>
+nmap <leader>de :call vimspector#Evaluate(<SID>get_visual_selection())<CR>
+nmap <leader>dw :call vimspector#AddWatch()<CR>
+nmap <leader>do :call vimspector#ShowOutput()<CR>
+
+" تعيين نقاط التوقف
+nmap <leader>db <Plug>VimspectorToggleBreakpoint
