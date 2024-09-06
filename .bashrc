@@ -96,5 +96,4 @@ function whatsmyip () {
     external_ip=$(curl -s ifconfig.me)
     echo "External IP: $external_ip"
 }
-export PATH=$PATH:/opt/resolve/bin
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
