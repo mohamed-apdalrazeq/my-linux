@@ -23,6 +23,7 @@ alias a='mpv --speed=1.3 '
 alias n='nnn'
 alias h='htop'
 alias c='yt-dlp --cookies-from-browser firefox' 
+alias l='lsblk'
 ##vim
 alias vi='vim'
 ##set -o vi
