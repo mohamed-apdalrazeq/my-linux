@@ -24,6 +24,8 @@ alias n='nnn'
 alias h='htop'
 alias c='yt-dlp --cookies-from-browser firefox' 
 alias l='lsblk'
+alias mo='doas mount -o umask=022 /dev/'
+
 ##vim
 alias vi='vim'
 ##set -o vi
