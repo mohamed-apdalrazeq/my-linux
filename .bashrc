@@ -24,7 +24,12 @@ alias n='nnn'
 alias h='htop'
 alias c='yt-dlp --cookies-from-browser firefox' 
 alias l='lsblk'
-alias mo='doas mount -o umask=022 /dev/'
+alias mo5='doas mount -o umask=022 /dev/sda5 /mnt/sda5'
+alias mo6='doas mount -o umask=022 /dev/sda6 /mnt/sda6'
+alias mo='doas mount -o umask=022 /dev/sdc1 /mnt/my_mount'
+alias um5='doas umount sda5'
+alias um6='doas umount sda6'
+alias um='doas umount my_mount'
 
 ##vim
 alias vi='vim'
