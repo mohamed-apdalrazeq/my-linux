@@ -41,7 +41,7 @@ super + b
         $HOME/.local/bin/passmenu.sh
 
 super + x
-        xournalpp
+        $HOME/.local/bin/x.sh
 
 super + shift + BackSpace
         $HOME/.local/bin/exit.sh
@@ -53,17 +53,13 @@ super + n
         $TERMINAL -e  nnn -Rr
 
 super + z
-        sleep1.sh
-
-super + f
-        rawtherapee
+        sleep.sh
 
 super + r
-        /opt/resolve/bin/resolve
-
+        rawtherapee
 
 super + c
-        code-oss
+        code
 
 super + o
         mypaint
