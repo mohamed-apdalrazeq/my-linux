@@ -18,6 +18,7 @@ alias s='source ~/.bashrc'
 alias m='mpv'
 alias y='yt-dlp -F'
 alias b='yt-dlp -f best'
+alias d='dotnet run'
 alias p='yt-dlp -f 22'
 alias a='mpv --speed=1.3 '
 alias n='nnn'
@@ -30,7 +31,7 @@ alias mo='doas mount -o umask=022 /dev/sdc1 /mnt/my_mount'
 alias um5='doas umount sda5'
 alias um6='doas umount sda6'
 alias um='doas umount my_mount'
-
+alias M='dotnet add package Microsoft.CodeAnalysis.CSharp'
 ##vim
 alias vi='vim'
 ##set -o vi
@@ -72,6 +73,7 @@ alias 777='chmod -R 777'
 # This alias uses ffmpeg to record the computer screen at a resolution of 1366x768 and saves it as an mp4 video file.
 # The frame rate is set to 25 frames per second, and it uses x11grab to capture the screen on Linux systems.
 alias f='ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0 output.mov'
+
 
 
 

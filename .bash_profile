@@ -15,8 +15,9 @@ export PATH=$PATH:/opt/resolve/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 export PATH=$PATH:/home/mohamed/project/VSCode/VSCode-linux-x64/bin/
-export PATH="$PATH:/home/mohamed/dotnet"
 
+export DOTNET_ROOT=/usr/share/dotnet
+export PATH=$DOTNET_ROOT:$PATH
 
 
 # Start X session if not already running
