@@ -5,6 +5,7 @@
 
 # Load custom keyboard layout
 doas loadkeys .config/loadkeys/loadkeysrc
+doas rfkill unblock bluetooth
 
 # Set environment variables
 export BROWSER="firefox"
@@ -15,8 +16,8 @@ export PATH=$PATH:/opt/resolve/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 export PATH=$PATH:/home/mohamed/project/VSCode/VSCode-linux-x64/bin/
+export PATH=$HOME/.local:$PATH
 
-export DOTNET_ROOT=/usr/share/dotnet
 export PATH=$DOTNET_ROOT:$PATH
 
 
