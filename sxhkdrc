@@ -17,7 +17,7 @@ super + Print
         $HOME/.local/bin/screencast.sh
 
 super + p
-        mpv $(xclip -o)
+        DRI_PRIME=1 mpv $(xclip -o)
 
 super + Return
         $TERMINAL
@@ -50,7 +50,7 @@ super + a
         libreoffice
 
 super + n
-        $TERMINAL -e  nnn -Rr
+        $TERMINAL -e DRI_PRIME=1 nnn -Rr
 
 super + z
         sleep.sh
@@ -62,7 +62,7 @@ super + c
         code
 
 super + o
-        mypaint
+        DRI_PRIME=1 mypaint
 
 # Connect to Wi-Fi
 alt + w
