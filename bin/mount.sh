@@ -2,23 +2,26 @@
 
 MOUNT_DIR="/mnt"
 
-# تأكد من وجود مجلد المونت
+# Ensure main mount directory exists
 [ ! -d "$MOUNT_DIR" ] && doas mkdir -p "$MOUNT_DIR"
 
-# دالة المونت مع صلاحيات آمنة
 mount_device() {
     DEVICE="$1"
     MOUNT_POINT="$MOUNT_DIR/$DEVICE"
     USER_ID=$(id -u)
     GROUP_ID=$(id -g)
+    
+    # Check if device actually exists
+    if [ ! -b "/dev/$DEVICE" ]; then
+        echo "Error: Device does not exist!" | dmenu -i -p "Error:"
+        exit 1
+    fi
 
-    # تحديد نوع نظام الملفات
     FSTYPE=$(lsblk -no FSTYPE "/dev/$DEVICE")
 
-    # إنشاء مجلد المونت
+    # Create mount directory
     doas mkdir -p "$MOUNT_POINT"
 
-    # خيارات المونت حسب نوع النظام
     case "$FSTYPE" in
         "ntfs")
             doas mount -t ntfs-3g -o "uid=$USER_ID,gid=$GROUP_ID,umask=077" "/dev/$DEVICE" "$MOUNT_POINT"
@@ -34,7 +37,6 @@ mount_device() {
     echo "Mounted /dev/$DEVICE at $MOUNT_POINT"
 }
 
-# دالة الأنمونت
 unmount_device() {
     DEVICE="$1"
     MOUNT_POINT="$MOUNT_DIR/$DEVICE"
@@ -43,12 +45,12 @@ unmount_device() {
         echo "Unmounted /dev/$DEVICE"
         doas rmdir "$MOUNT_POINT"
     else
-        echo "Failed to unmount /dev/$DEVICE!"
+        echo "Failed to unmount /dev/$DEVICE!" | dmenu -i -p "Error:"
         exit 1
     fi
 }
 
-# توليد قائمة البرتشنات
+# Generate partition list
 DEVICE=$(lsblk -ln -o NAME,SIZE,TYPE,MOUNTPOINT,FSTYPE | awk '
     /part/ && !/SWAP/ {
         if ($4 == "") status = "[Unmounted]"; else status = "[Mounted]"
@@ -57,10 +59,16 @@ DEVICE=$(lsblk -ln -o NAME,SIZE,TYPE,MOUNTPOINT,FSTYPE | awk '
 
 [ -z "$DEVICE" ] && exit 1
 
-# استخراج اسم البرتشن
+# Extract device name
 DEVICE_NAME=$(echo "$DEVICE" | awk '{print $1}')
 
-# التحقق من حالة المونت
+# Validate device existence
+if [ ! -b "/dev/$DEVICE_NAME" ]; then
+    echo "Error: Selected partition does not exist!" | dmenu -i -p "Error:"
+    exit 1
+fi
+
+# Check mount status
 MOUNTED=$(lsblk -no MOUNTPOINT "/dev/$DEVICE_NAME")
 
 if [ -n "$MOUNTED" ]; then
