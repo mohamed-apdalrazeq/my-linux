@@ -1,20 +1,63 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-case $BLOCK_BUTTON in
-    1) notify-send "🖥  CPU hogs" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)\\n(100% per core)" ;;
-    2) setsid -f "$TERMINAL" -e htop ;;
-    3) notify-send "🖥  CPU module " "\- Shows CPU temperature.
-- Click to show intensive processes.
-- Middle click to open htop." ;;
-    6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
-esac
+# CPU Monitor (Usage + Temperature) - الإصدار النهائي
+# تم التعديل لمعالجة الأخطاء نهائيًا
 
-# Retrieve the first CPU load average
-cpu_load=$(uptime | awk -F'load average:' '{print $2}' | cut -d, -f1 | sed 's/ //g')
+# إعدادات القياس
+CPU_PREFIX='CPU '
+TEMP_PREFIX=' '
+INTERVAL=1.5  # زادت الفترة لمنع القيم السلبية
+DECIMAL_PRECISION=1
 
-# Retrieve CPU temperature and format it
-cpu_temp=$(sensors | awk '/Core 0/ {print int($3)}')
+get_cpu_usage() {
+    [[ ! -f /proc/stat ]] && return 1
 
-# Output in desired format
-echo "CPU:$cpu_load - 🌡 $cpu_temp°C"
+    # القراءة الأولى
+    local cpu1=($(grep '^cpu ' /proc/stat))
+    sleep "$INTERVAL"
+    
+    # القراءة الثانية
+    local cpu2=($(grep '^cpu ' /proc/stat))
 
+    # طريقة جديدة لجمع القيم
+    sum_array() {
+        local sum=0
+        for num in "$@"; do
+            ((sum += num))
+        done
+        echo "$sum"
+    }
+
+    local total1=$(sum_array "${cpu1[@]:1:8}")  # 8 عناصر فقط (تجنب المشاكل)
+    local total2=$(sum_array "${cpu2[@]:1:8}")
+    local idle1=${cpu1[4]}  # العنصر الخامس هو idle
+    local idle2=${cpu2[4]}
+
+    local total_delta=$((total2 - total1))
+    local idle_delta=$((idle2 - idle1))
+    local used_delta=$((total_delta - idle_delta))
+
+    if [[ $total_delta -le 0 || $used_delta -lt 0 ]]; then
+        echo "0.0%"
+        return 0
+    fi
+
+    local cpu_usage=$(awk -v u="$used_delta" -v t="$total_delta" -v p="$DECIMAL_PRECISION" \
+        'BEGIN {printf "%.*f%%", p, (u/t)*100}')
+    
+    echo "$cpu_usage"
+}
+
+get_cpu_temp() {
+    local temp_file=$(find /sys/class/thermal/thermal_zone*/ -name "temp" | head -1)
+    [[ -z "$temp_file" ]] && { echo "N/A"; return 1; }
+    
+    local temp_raw=$(cat "$temp_file")
+    local temp_c=$(awk -v t="$temp_raw" 'BEGIN {printf "%d", t/1000}')  # <-- التعديل هنا
+    echo "${temp_c}°C"
+}
+# التنفيذ الرئيسي
+cpu_usage=$(get_cpu_usage || echo "Error")
+cpu_temp=$(get_cpu_temp || echo "N/A")
+
+echo "${CPU_PREFIX}:${cpu_usage} - ${TEMP_PREFIX}${cpu_temp}"
