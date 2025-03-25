@@ -1,63 +1,31 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-# CPU Monitor (Usage + Temperature) - الإصدار النهائي
-# تم التعديل لمعالجة الأخطاء نهائيًا
+# Prints out the CPU load percentage with one decimal place, keeping status bar alignment
 
-# إعدادات القياس
-CPU_PREFIX='CPU '
-TEMP_PREFIX=' '
-INTERVAL=1.5  # زادت الفترة لمنع القيم السلبية
-DECIMAL_PRECISION=1
+PREFIX="CPU:"
 
-get_cpu_usage() {
-    [[ ! -f /proc/stat ]] && return 1
+get_load() {
+  # Get the first line with aggregate of all CPUs
+  cpu_last=($(head -n1 /proc/stat))
+  cpu_last_sum="${cpu_last[@]:1}"
+  cpu_last_sum=$((${cpu_last_sum// /+}))
 
-    # القراءة الأولى
-    local cpu1=($(grep '^cpu ' /proc/stat))
-    sleep "$INTERVAL"
-    
-    # القراءة الثانية
-    local cpu2=($(grep '^cpu ' /proc/stat))
+  sleep 0.05
 
-    # طريقة جديدة لجمع القيم
-    sum_array() {
-        local sum=0
-        for num in "$@"; do
-            ((sum += num))
-        done
-        echo "$sum"
-    }
+  cpu_now=($(head -n1 /proc/stat))
+  cpu_sum="${cpu_now[@]:1}"
+  cpu_sum=$((${cpu_sum// /+}))
 
-    local total1=$(sum_array "${cpu1[@]:1:8}")  # 8 عناصر فقط (تجنب المشاكل)
-    local total2=$(sum_array "${cpu2[@]:1:8}")
-    local idle1=${cpu1[4]}  # العنصر الخامس هو idle
-    local idle2=${cpu2[4]}
+  cpu_delta=$((cpu_sum - cpu_last_sum))
+  cpu_idle=$((cpu_now[4] - cpu_last[4]))
+  cpu_used=$((cpu_delta - cpu_idle))
 
-    local total_delta=$((total2 - total1))
-    local idle_delta=$((idle2 - idle1))
-    local used_delta=$((total_delta - idle_delta))
+  # ضبط النسبة المئوية بحيث تأخذ دائمًا نفس عدد الأحرف لكن بمسافة أقل
+  cpu_usage=$(awk "BEGIN {printf \"%4.1f\", ($cpu_used/$cpu_delta) * 100}")
 
-    if [[ $total_delta -le 0 || $used_delta -lt 0 ]]; then
-        echo "0.0%"
-        return 0
-    fi
-
-    local cpu_usage=$(awk -v u="$used_delta" -v t="$total_delta" -v p="$DECIMAL_PRECISION" \
-        'BEGIN {printf "%.*f%%", p, (u/t)*100}')
-    
-    echo "$cpu_usage"
+  # طباعة النتيجة بدون مسافات زائدة
+  echo "${PREFIX}${cpu_usage}%"
 }
 
-get_cpu_temp() {
-    local temp_file=$(find /sys/class/thermal/thermal_zone*/ -name "temp" | head -1)
-    [[ -z "$temp_file" ]] && { echo "N/A"; return 1; }
-    
-    local temp_raw=$(cat "$temp_file")
-    local temp_c=$(awk -v t="$temp_raw" 'BEGIN {printf "%d", t/1000}')  # <-- التعديل هنا
-    echo "${temp_c}°C"
-}
-# التنفيذ الرئيسي
-cpu_usage=$(get_cpu_usage || echo "Error")
-cpu_temp=$(get_cpu_temp || echo "N/A")
+get_load
 
-echo "${CPU_PREFIX}:${cpu_usage} - ${TEMP_PREFIX}${cpu_temp}"
