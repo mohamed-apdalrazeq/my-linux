@@ -1,37 +1,43 @@
-#!/bin/sh
+#!/bin/bash
 
-# Prints all batteries, their percentage remaining and an emoji corresponding
-# to charge status (🔌 for plugged up, 🔋 for discharging on battery, etc.).
+# Prints out battery percentage
 
-case $BLOCK_BUTTON in
-	3) notify-send "🔋 Battery module" "🔋: discharging
-🛑: not charging
-♻: stagnant charge
-🔌: charging
-⚡: charged
-❗: battery very low!
-- Scroll to change adjust xbacklight." ;;
-	4) xbacklight -inc 10 ;;
-	5) xbacklight -dec 10 ;;
-	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
-esac
+CHARGING_ICON=' '
+WARNING_ICON=' '
+BATTERY_FULL_ICON=''
+BATTERY_2_ICON=''
+BATTERY_3_ICON=''
+BATTERY_4_ICON=''
 
-# Loop through all attached batteries and format the info
-for battery in /sys/class/power_supply/BAT?*; do
-	# If non-first battery, print a space separator.
-	[ -n "${capacity+x}" ] && printf " "
-	# Sets up the status and capacity
-	case "$(cat "$battery/status" 2>&1)" in
-		"Full") status="⚡" ;;
-		"Discharging") status="🔋" ;;
-		"Charging") status="🔌" ;;
-		"Not charging") status="🛑" ;;
-		"Unknown") status="♻️" ;;
-		*) exit 1 ;;
-	esac
-	capacity="$(cat "$battery/capacity" 2>&1)"
-	# Will make a warn variable if discharging and low
-	[ "$status" = "🔋" ] && [ "$capacity" -le 25 ] && warn="❗"
-	# Prints the info
-	printf "%s%s%d%%" "$status" "$warn" "$capacity"; unset warn
-done && printf "\\n"
+FULL_AT=98
+
+BAT_ICON=""
+ICON=""
+
+get_battery()
+{
+	# The vast majority of people only use one battery.
+
+	if [ -d /sys/class/power_supply/BAT0 ]; then
+		capacity=$(cat /sys/class/power_supply/BAT0/capacity)
+		charging=$(cat /sys/class/power_supply/BAT0/status)
+		if [[ "$charging" == "Charging" ]]; then
+			ICON="$CHARGING_ICON"
+		elif [[ $capacity -le 25 ]]; then
+			ICON="$WARNING_ICON"
+		fi
+
+		if [[ $capacity -ge $FULL_AT ]]; then
+			BAT_ICON=$BATTERY_FULL_ICON
+		elif [[ $capacity -le 25 ]]; then
+			BAT_ICON=$BATTERY_4_ICON
+		elif [[ $capacity -le 60 ]]; then
+			BAT_ICON=$BATTERY_3_ICON
+		elif [[ $capacity -le $FULL_AT ]]; then
+			BAT_ICON=$BATTERY_2_ICON
+		fi
+	fi
+	echo "$ICON$BAT_ICON  $capacity%"
+}
+
+get_battery
