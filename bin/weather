@@ -1,15 +1,46 @@
 #!/bin/bash
 
-# Deps:
-# 	curl
+get_weather() {
+    local weather_data
+    weather_data=$(curl -s 'v2.wttr.in?format=%C+%t')
 
+    local condition temperature
+    condition=$(echo "$weather_data" | awk '{print $1}')
+    temperature=$(echo "$weather_data" | awk '{print $2}')
 
-get_weather()
-{
-	curl -s v2.wttr.in | grep -e "Weather" | sed -n 2p | sed s/Weather://g | sed 's/,//g' | sed 's/+//g' | sed 's/°C.*/°C/' | sed 's/.*m//'
+    local hour
+    hour=$(date '+%H')  # الحصول على الساعة الحالية (00-23)
+
+    local icon
+    if [ "$hour" -ge 18 ] || [ "$hour" -lt 6 ]; then
+        # إذا كان الوقت بين 6 مساءً و 6 صباحًا، استخدم أيقونات الليل
+        case "$condition" in
+            "Clear" | "Sunny") icon="🌙" ;;  # سماء صافية ليلاً
+            "Cloudy") icon="☁️" ;;
+            "Overcast") icon="🌥️" ;;
+            "Rain" | "Showers") icon="🌧️" ;;
+            "Thunderstorm") icon="⛈️" ;;
+            "Snow") icon="❄️" ;;
+            "Fog") icon="🌫️" ;;
+            *) icon="🌍" ;;
+        esac
+    else
+        # في النهار استخدم الأيقونات العادية
+        case "$condition" in
+            "Clear") icon="☀" ;;
+            "Sunny") icon="🌞" ;;
+            "Cloudy") icon="☁" ;;
+            "Overcast") icon="🌥️" ;;
+            "Rain" | "Showers") icon="🌧️" ;;
+            "Thunderstorm") icon="⛈️" ;;
+            "Snow") icon="❄" ;;
+            "Fog") icon="🌫️" ;;
+            *) icon="🌍" ;;
+        esac
+    fi
+
+    echo "$icon $condition $temperature"
 }
 
+get_weather
 
-if [ $(( 10#$(date '+%S') % 30 )) -eq 0 ]; then
-	get_weather
-fi

@@ -21,7 +21,7 @@ get_connected_interface() {
     if [ "$(cat /sys/class/net/w*/operstate 2>/dev/null)" = 'up' ]; then
         ssid=$(iw dev wlp2s0 link | grep 'SSID:' | awk '{print $2}')
         if [ -n "$ssid" ]; then
-            echo "$ssid:(UP)"
+            echo "$ssid:"
         else
             echo "WiFi: (UP)"
         fi
