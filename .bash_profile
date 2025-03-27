@@ -14,10 +14,9 @@ export TERM="st"
 export PATH=$HOME/.local/bin/:$PATH
 export PATH=$PATH:/opt/resolve/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-
+export PATH=$HOME/.dotnet:$HOME/.dotnet/tools:$PATH
 export PATH=$PATH:/home/mohamed/project/VSCode/VSCode-linux-x64/bin/
 export PATH=$HOME/.local:$PATH
-
 export PATH=$DOTNET_ROOT:$PATH
 
 
