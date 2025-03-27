@@ -2,7 +2,7 @@
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
-
+set -o vi
 alias ls='ls --color=auto'
 ##PS1='[\u@\h \W]\$ '
 PS1='\[\033[01;31m\]\W >\[\033[00m\] '
@@ -23,6 +23,7 @@ alias res='doas sv restart bluetoothd'
 alias p='yt-dlp -f 22'
 alias n='nnn'
 alias h='htop'
+alias t='btm'
 alias c='yt-dlp --cookies-from-browser firefox' 
 alias l='lsblk'
 alias mo5='doas mount -o umask=022 /dev/sdb5 /mnt/sda5'
@@ -44,7 +45,7 @@ alias mkgz='tar -cvzf'
 alias untar='tar -xvf'
 alias unbz2='tar -xvjf'
 alias ungz='tar -xvzf'
-alias x='sudo /opt/lampp/manager-linux-x64.run'
+
 # Alias's to show disk space and space used in a folder
 alias folders='du -h --max-depth=1'
 alias treed='tree -CAFd'
