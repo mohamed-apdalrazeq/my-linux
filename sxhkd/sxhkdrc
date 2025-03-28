@@ -25,23 +25,14 @@ super + Return
 super + s
         center-term.sh
 
-super + equal
-    	voulum.sh up
-
-super + minus
-    	voulum.sh down
-
-super + BackSpace
-    	voulum.sh toggle
+super + {equal, minus, BackSpace}
+    	voulum.sh {up, down, toggle}
 
 super + m
         $HOME/.local/bin/mount.sh
 
 super + b
         $HOME/.local/bin/passmenu.sh
-
-super + x
-        $HOME/.local/bin/x.sh
 
 super + shift + BackSpace
         $HOME/.local/bin/exit.sh
@@ -64,11 +55,12 @@ super + c
 super + o
         mypaint
 
-# Connect to Wi-Fi
 alt + w
         connect_wifi.sh
 
-# Disconnect from Wi-Fi
 alt + shift + w
         disconnect_wifi.sh
+
+super + g
+        dbus-launch --exit-with-session flatpak run org.geogebra.GeoGebra
 
