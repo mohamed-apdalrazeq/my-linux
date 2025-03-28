@@ -1,0 +1,49 @@
+#!/bin/sh
+
+baseDir=$(dirname "$(realpath $0)")
+homeDir="$baseDir/home/user"
+
+printf "### Updating system..."
+sudo xbps-install -Syu
+
+printf "### Install X..."
+sudo xbps-install -Sy xorg-server xinit libX11-devel libXft-devel libXinerama-devel glib-devel font-inconsolata-otf
+sudo xbps-install -Sy xorg
+
+printf "### Install Building tools..."
+sudo xbps-install -Sy git gcc make pkg-config
+
+printf "### Install Man pages..."
+sudo xbps-install -Sy man-pages-devel
+
+printf "### Install tools for suckless surf..."
+sudo xbps-install -Sy webkit2gtk-devel
+
+printf "### Install Multimedia..."
+sudo xbps-install -Sy mpd ffmpeg mpv youtube-dl
+
+printf "### Install Diagnostics..."
+sudo xbps-install -Sy iotop htop
+
+printf "### Install General Tools..."
+sudo xbps-install -Sy groff sxhkd zathura-pdf-mupdf vim rsync firefox alsa-utils xz ImageMagick pass
+
+printf "### Install e-Mail Tools..."
+sudo xbps-install -Sy neomutt msmtp
+
+printf "### Install FileSystems support..."
+sudo xbps-install -Sy fuse-exfat
+
+cp -r $homeDir/. ~/
+
+for sucklessProgram in $(ls $HOME/suckless)
+do
+    cd $HOME/suckless/$sucklessProgram
+    git checkout master
+    sudo make install
+    make clean
+done
+
+printf "### Install nvidia..."
+sudo xbps-install -Sy nvidia-opencl
+
