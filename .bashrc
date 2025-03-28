@@ -4,9 +4,9 @@
 [[ $- != *i* ]] && return
 set -o vi
 alias ls='ls --color=auto'
-##PS1='[\u@\h \W]\$ '
-PS1='\[\033[01;31m\]\W >\[\033[00m\] '
 
+##PS1='\[\033[01;31m\]\W >\[\033[00m\] '
+PS1='\[\033[38;5;85m\]\W\[\033[01;31m\] >\[\033[00m\] '
 
 alias ll='ls -l'
 alias i='doas xbps-install -S' 
@@ -24,7 +24,7 @@ alias p='yt-dlp -f 22'
 alias n='nnn'
 alias h='htop'
 alias t='btm'
-alias c='yt-dlp --cookies-from-browser firefox' 
+alias c='yt-dlp -f bestvideo+bestaudio --merge-output-format mp4' 
 alias l='lsblk'
 alias mo5='doas mount -o umask=022 /dev/sdb5 /mnt/sda5'
 alias mo6='doas mount -o umask=022 /dev/sdb6 /mnt/sda6'
