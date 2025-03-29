@@ -26,7 +26,7 @@ super + s
         center-term.sh
 
 super + {equal, minus, BackSpace}
-    	voulum.sh {up, down, toggle}
+    	volume.sh {up, down, toggle}
 
 super + m
         $HOME/.local/bin/mount.sh
