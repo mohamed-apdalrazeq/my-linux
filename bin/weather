@@ -2,7 +2,7 @@
 
 get_weather() {
     local weather_data
-    weather_data=$(curl -s 'v2.wttr.in?format=%C+%t')
+weather_data=$(curl -s 'v2.wttr.in/saft-zurayq?format=%C+%t')
 
     local condition temperature
     condition=$(echo "$weather_data" | awk '{print $1}')
@@ -38,8 +38,7 @@ get_weather() {
             *) icon="🌍" ;;
         esac
     fi
-
-    echo "$icon $condition $temperature"
+echo "${icon}${condition:+ $condition}${temperature:+ $temperature}"
 }
 
 get_weather
