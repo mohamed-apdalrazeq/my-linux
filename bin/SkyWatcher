@@ -1,0 +1,56 @@
+#!/bin/bash
+
+API_KEY="Your-KEY"
+LATITUDE=""
+LONGITUDE=""
+
+get_weather() {
+    local weather_data temperature condition_code icon condition
+    
+    # جلب بيانات الطقس من OpenWeatherMap
+    weather_data=$(curl -s "https://api.openweathermap.org/data/2.5/weather?lat=$LATITUDE&lon=$LONGITUDE&appid=$API_KEY&units=metric")
+    temperature=$(echo "$weather_data" | jq '.main.temp')
+    condition_code=$(echo "$weather_data" | jq '.weather[0].id')
+    
+    # تحويل رمز الطقس إلى وصف
+    case "$condition_code" in
+        800) condition="Clear" ;;  # صافٍ
+        801|802|803|804) condition="Cloudy" ;;  # غائم جزئيًا إلى كليًا
+        701|711|721|731|741|751|761|771|781) condition="Fog" ;;  # ضباب
+        300|301|302|310|311|312|313|314|321) condition="Showers" ;;  # زخات مطرية خفيفة
+        500|501|502|503|504|511|520|521|522|531) condition="Rain" ;;  # أمطار
+        600|601|602|611|612|613|615|616|620|621|622) condition="Snow" ;;  # ثلوج
+        200|201|202|210|211|212|221|230|231|232) condition="Thunderstorm" ;;  # عواصف رعدية
+        *) condition="" ;;  # غير معروف
+    esac
+    
+    local hour=$(date '+%H')  # الحصول على الساعة الحالية (00-23)
+    
+    # اختيار الأيقونة حسب حالة الطقس والوقت
+    if [ "$hour" -ge 18 ] || [ "$hour" -lt 6 ]; then
+        case "$condition" in
+            "Clear") icon="🌙" ;;  # سماء صافية ليلاً
+            "Cloudy") icon="☁" ;;
+            "Fog") icon="🌫️" ;;
+            "Showers" | "Rain") icon="🌧️" ;;
+            "Snow") icon="❄" ;;
+            "Thunderstorm") icon="⛈️" ;;
+            *) icon="🌍" ;;
+        esac
+    else
+        case "$condition" in
+            "Clear") icon="☀" ;;
+            "Cloudy") icon="☁" ;;
+            "Fog") icon="🌫️" ;;
+            "Showers" | "Rain") icon="🌧️" ;;
+            "Snow") icon="❄" ;;
+            "Thunderstorm") icon="⛈️" ;;
+            *) icon="🌍" ;;
+        esac
+    fi
+    
+    echo "${icon} ${condition} ${temperature}°C"
+}
+
+get_weather
+
