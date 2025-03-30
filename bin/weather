@@ -1,44 +1,53 @@
 #!/bin/bash
 
 get_weather() {
-    local weather_data
-weather_data=$(curl -s 'v2.wttr.in/saft-zurayq?format=%C+%t')
-
-    local condition temperature
-    condition=$(echo "$weather_data" | awk '{print $1}')
-    temperature=$(echo "$weather_data" | awk '{print $2}')
-
-    local hour
-    hour=$(date '+%H')  # الحصول على الساعة الحالية (00-23)
-
-    local icon
+    local weather_data temperature condition_code icon condition
+    
+    # جلب بيانات الطقس (درجة الحرارة ورمز الطقس)
+    weather_data=$(curl -s "https://api.open-meteo.com/v1/forecast?latitude=30.7318&longitude=31.4427&current=temperature_2m,weathercode")
+    temperature=$(echo "$weather_data" | jq '.current.temperature_2m')
+    condition_code=$(echo "$weather_data" | jq '.current.weathercode')
+    
+    # تحويل رمز الطقس إلى وصف
+    case "$condition_code" in
+        0) condition="Clear" ;;  # صافٍ
+        1|2|3) condition="Cloudy" ;;  # غائم جزئيًا إلى كليًا
+        45|48) condition="Fog" ;;  # ضباب
+        51|53|55|56|57) condition="Showers" ;;  # زخات مطرية خفيفة إلى متوسطة
+        61|63|65|66|67) condition="Rain" ;;  # أمطار
+        71|73|75|77) condition="Snow" ;;  # ثلوج
+        80|81|82) condition="Showers" ;;  # زخات مطرية غزيرة
+        85|86) condition="Snow" ;;  # زخات ثلجية
+        95|96|99) condition="Thunderstorm" ;;  # عواصف رعدية
+        *) condition="Unknown" ;;  # غير معروف
+    esac
+    
+    local hour=$(date '+%H')  # الحصول على الساعة الحالية (00-23)
+    
+    # اختيار الأيقونة حسب حالة الطقس والوقت
     if [ "$hour" -ge 18 ] || [ "$hour" -lt 6 ]; then
-        # إذا كان الوقت بين 6 مساءً و 6 صباحًا، استخدم أيقونات الليل
         case "$condition" in
-            "Clear" | "Sunny") icon="🌙" ;;  # سماء صافية ليلاً
-            "Cloudy") icon="☁️" ;;
-            "Overcast") icon="🌥️" ;;
-            "Rain" | "Showers") icon="🌧️" ;;
-            "Thunderstorm") icon="⛈️" ;;
-            "Snow") icon="❄️" ;;
+            "Clear") icon="🌙" ;;  # سماء صافية ليلاً
+            "Cloudy") icon="☁" ;;
             "Fog") icon="🌫️" ;;
+            "Showers" | "Rain") icon="🌧️" ;;
+            "Snow") icon="❄" ;;
+            "Thunderstorm") icon="⛈️" ;;
             *) icon="🌍" ;;
         esac
     else
-        # في النهار استخدم الأيقونات العادية
         case "$condition" in
             "Clear") icon="☀" ;;
-            "Sunny") icon="🌞" ;;
             "Cloudy") icon="☁" ;;
-            "Overcast") icon="🌥️" ;;
-            "Rain" | "Showers") icon="🌧️" ;;
-            "Thunderstorm") icon="⛈️" ;;
-            "Snow") icon="❄" ;;
             "Fog") icon="🌫️" ;;
+            "Showers" | "Rain") icon="🌧️" ;;
+            "Snow") icon="❄" ;;
+            "Thunderstorm") icon="⛈️" ;;
             *) icon="🌍" ;;
         esac
     fi
-echo "${icon}${condition:+ $condition}${temperature:+ $temperature}"
+    
+    echo "${icon} ${condition} ${temperature}°C"
 }
 
 get_weather
