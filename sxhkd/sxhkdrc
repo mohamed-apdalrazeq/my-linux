@@ -10,6 +10,9 @@ super + d
 Print
         maim -u -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
 
+super + S
+	dbeaver
+
 ctrl + Print
         maim -s | xclip -selection clipboard -t image/png
 
