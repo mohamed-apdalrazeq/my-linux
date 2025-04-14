@@ -15,16 +15,21 @@ alias q='doas xbps-query -Rs'
 alias r='doas xbps-remove -R'
 alias s='source ~/.bashrc'
 alias m='doas dhclient -v wlp2s0'
+
+##yt-dlp
 alias y='yt-dlp -F'
 alias f='yt-dlp -f best'
+alias c='yt-dlp -f bestvideo+bestaudio --merge-output-format mp4'
+alias 1080='yt-dlp -f "bv[height=1080]+ba" -o "%(title)s.%(ext)s"'
+alias  720='yt-dlp -f "bv[height=720]+ba" -o "%(title)s.%(ext)s"'
+
+
 alias d='dotnet run'
 alias unb='doas rfkill unblock bluetooth'
 alias res='doas sv restart bluetoothd'
-alias p='yt-dlp -f 22'
 alias n='nnn'
 alias h='htop'
 alias t='btm'
-alias c='yt-dlp -f bestvideo+bestaudio --merge-output-format mp4' 
 alias l='lsblk'
 alias mo5='doas mount -o umask=022 /dev/sdb5 /mnt/sda5'
 alias mo6='doas mount -o umask=022 /dev/sdb6 /mnt/sda6'
