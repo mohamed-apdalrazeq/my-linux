@@ -9,7 +9,7 @@ alias ls='ls --color=auto'
 PS1='\[\033[38;5;85m\]\W\[\033[01;31m\] >\[\033[00m\] '
 
 alias ll='ls -l'
-alias i='doas xbps-install -S' 
+alias i='doas xbps-install -S'
 alias u='i; doas xbps-install -u xbps; doas xbps-install -u'
 alias q='doas xbps-query -Rs'
 alias r='doas xbps-remove -R'
@@ -21,9 +21,9 @@ alias y='yt-dlp -F'
 alias f='yt-dlp -f best'
 alias c='yt-dlp -f bestvideo+bestaudio --merge-output-format mp4'
 alias 1080='yt-dlp -f "bv[height=1080]+ba" -o "%(title)s.%(ext)s"'
-alias  720='yt-dlp -f "bv[height=720]+ba" -o "%(title)s.%(ext)s"'
+alias 720='yt-dlp -f "bv[height=720]+ba" -o "%(title)s.%(ext)s"'
 
-
+alias dg='dotnet new gitignore'
 alias d='dotnet run'
 alias unb='doas rfkill unblock bluetooth'
 alias res='doas sv restart bluetoothd'
@@ -63,11 +63,8 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 
-
 # cd into the old directory
 alias bd='cd "$OLDPWD"'
-
-
 
 # alias chmod commands
 alias mx='chmod a+x'
@@ -81,16 +78,13 @@ alias 777='chmod -R 777'
 # The frame rate is set to 25 frames per second, and it uses x11grab to capture the screen on Linux systems.
 alias f='ffmpeg -video_size 1366x768 -framerate 25 -f x11grab -i :0.0 output.mov'
 
-
-
-
 # اختصار للدالة التي تبحث عن عناوين الـ IP
 alias myip="whatsmyip"
 
 # دالة للبحث عن عناوين الـ IP الداخلية والخارجية
-function whatsmyip () {
+function whatsmyip() {
     # Detect internal IP address for either WiFi or Ethernet
-    if command -v ip &> /dev/null; then
+    if command -v ip &>/dev/null; then
         internal_ip=$(ip addr show wlp2s0 2>/dev/null | grep "inet " | awk '{print $2}' | cut -d/ -f1)
         if [ -z "$internal_ip" ]; then
             internal_ip=$(ip addr show enp1s0 2>/dev/null | grep "inet " | awk '{print $2}' | cut -d/ -f1)
@@ -113,4 +107,3 @@ function whatsmyip () {
     external_ip=$(curl -s ifconfig.me)
     echo "External IP: $external_ip"
 }
-
