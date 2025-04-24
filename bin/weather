@@ -4,7 +4,7 @@ get_weather() {
     local weather_data temperature condition_code icon condition
     
     # جلب بيانات الطقس (درجة الحرارة ورمز الطقس)
-    weather_data=$(curl -s "https://api.open-meteo.com/v1/forecast?latitude=30.7318&longitude=31.4427&current=temperature_2m,weathercode")
+    weather_data=$(curl -s "https://api.open-meteo.com/v1/forecast?latitude=&longitude=&current=temperature_2m,weathercode")
     temperature=$(echo "$weather_data" | jq '.current.temperature_2m')
     condition_code=$(echo "$weather_data" | jq '.current.weathercode')
     
