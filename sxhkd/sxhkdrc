@@ -34,8 +34,11 @@ super + {equal, minus, BackSpace}
 super + m
         $HOME/.local/bin/mount.sh
 
-super + b
-        $HOME/.local/bin/passmenu.sh
+ctrl + shift 1
+	connect_soundcore.sh
+
+ctrl + shift 2
+	connect_huawei.sh
 
 super + shift + BackSpace
         $HOME/.local/bin/exit.sh
