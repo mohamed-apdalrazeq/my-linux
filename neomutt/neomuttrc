@@ -1,1 +1,29 @@
+	
+  
+  set realname = "Your name"
+  set from = "Your mail"
+  
+  # IMAP ﻺﺴﺘﻘﺑﺎﻟ ﺎﻠﺑﺮﻳﺩ
+  set imap_user = "Your name"
+  set imap_pass = "Your key"
+#source "gpg -dq ~/.mutt/passwords.gpg |"
+  set folder = "imaps://imap.gmail.com:993"
+  set spoolfile = "+INBOX"
+  set record = "+[Gmail]/Sent Mail"
+  set postponed = "+[Gmail]/Drafts"
+  set trash = "+[Gmail]/Trash"
+ 
+  # SMTP ﻹﺮﺳﺎﻟ ﺎﻠﺑﺮﻳﺩ
+  set smtp_url = "smtp://yourmail@smtp.gmail.com:587/"
+  set smtp_pass = "your key"
+ # source "gpg -dq ~/.mutt/passwords.gpg |"
+  # ﺦﻳﺍﺭﺎﺗ ﻉﺮﺿ ﻮﻜﺗﺎﺑﺓ
+  set header_cache =~/.cache/mutt
+  set message_cachedir =~/.cache/mutt
+  set certificate_file =~/.mutt/certificates
+ 
+  set move = no
+  set imap_keepalive = 900
+  set ssl_force_tls = yes
+  set ssl_starttls = yes
 
