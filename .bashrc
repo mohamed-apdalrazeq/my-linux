@@ -20,6 +20,7 @@ alias m='doas dhclient -v wlp2s0'
 alias y='yt-dlp -F'
 alias f='yt-dlp -f best'
 alias c='yt-dlp -f bestvideo+bestaudio --merge-output-format mp4'
+alias C='yt-dlp --cookies-from-browser firefox'
 alias 1080='yt-dlp -f "bv[height=1080]+ba" -o "%(title)s.%(ext)s"'
 alias 720='yt-dlp -f "bv[height=720]+ba" -o "%(title)s.%(ext)s"'
 
@@ -39,8 +40,12 @@ alias um6='doas umount sda6'
 alias um='doas umount my_mount'
 alias b="bluetoothctl"
 alias M='dotnet add package Microsoft.CodeAnalysis.CSharp'
+alias dr='dotnet ef migrations remove'
+alias da='dotnet ef migrations add'
+alias du='dotnet ef database update'
+
 ##vim
-alias vi='vim'
+alias vi='vim-huge'
 ##set -o vi
 
 # Alias's for archives
