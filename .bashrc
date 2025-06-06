@@ -21,28 +21,25 @@ alias y='yt-dlp -F'
 alias f='yt-dlp -f best'
 alias c='yt-dlp -f bestvideo+bestaudio --merge-output-format mp4'
 alias C='yt-dlp --cookies-from-browser firefox'
-alias 1080='yt-dlp -f "bv[height=1080]+ba" -o "%(title)s.%(ext)s"'
-alias 720='yt-dlp -f "bv[height=720]+ba" -o "%(title)s.%(ext)s"'
+alias 1080='yt-dlp -f "bv[height=1080]+ba" -o "%(playlist_index)s - %(title).100s.%(ext)s"'
+alias 720='yt-dlp -f "bv[height=720]+ba" -o "%(playlist_title)s/%(playlist_index)03d - %(title).100s.%(ext)s"'
 
-alias dg='dotnet new gitignore'
-alias d='dotnet run'
+
 alias unb='doas rfkill unblock bluetooth'
 alias res='doas sv restart bluetoothd'
 alias n='nnn'
 alias h='htop'
 alias t='btm'
 alias l='lsblk'
-alias mo5='doas mount -o umask=022 /dev/sdb5 /mnt/sda5'
-alias mo6='doas mount -o umask=022 /dev/sdb6 /mnt/sda6'
-alias mo='doas mount -o umask=022 /dev/sdc /mnt/my_mount'
-alias um5='doas umount sda5'
-alias um6='doas umount sda6'
-alias um='doas umount my_mount'
 alias b="bluetoothctl"
+
+##dotnet
 alias M='dotnet add package Microsoft.CodeAnalysis.CSharp'
 alias dr='dotnet ef migrations remove'
 alias da='dotnet ef migrations add'
 alias du='dotnet ef database update'
+alias d='dotnet run'
+alias dg='dotnet new gitignore'
 
 ##vim
 alias vi='vim-huge'
