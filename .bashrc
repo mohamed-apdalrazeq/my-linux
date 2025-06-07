@@ -22,8 +22,9 @@ alias f='yt-dlp -f best'
 alias c='yt-dlp -f bestvideo+bestaudio --merge-output-format mp4'
 alias C='yt-dlp --cookies-from-browser firefox'
 alias 1080='yt-dlp -f "bv[height=1080]+ba" -o "%(playlist_index)s - %(title).100s.%(ext)s"'
+alias 1080r='yt-dlp --playlist-reverse -f "bv[height=1080]+ba" -o "%(playlist_title)s/%(playlist_index)03d - %(title).100s.%(ext)s"'
 alias 720='yt-dlp -f "bv[height=720]+ba" -o "%(playlist_title)s/%(playlist_index)03d - %(title).100s.%(ext)s"'
-
+alias 720r='yt-dlp --playlist-reverse -f "bv[height=720]+ba" -o "%(playlist_title)s/%(playlist_index)03d - %(title).100s.%(ext)s"'
 
 alias unb='doas rfkill unblock bluetooth'
 alias res='doas sv restart bluetoothd'
