@@ -55,7 +55,7 @@ alias unbz2='tar -xvjf'
 alias ungz='tar -xvzf'
 
 # Alias's to show disk space and space used in a folder
-alias folders='du -h --max-depth=1'
+alias folders='/usr/bin/du -h --max-depth=1'
 alias treed='tree -CAFd'
 
 # Change directory aliases
