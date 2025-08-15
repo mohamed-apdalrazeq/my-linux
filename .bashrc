@@ -69,6 +69,9 @@ alias .....='cd ../../../..'
 # cd into the old directory
 alias bd='cd "$OLDPWD"'
 
+#restart-audio
+alias restart-mpv='pulseaudio -k && pulseaudio --start && systemctl --user restart pipewire pipewire-pulse'
+
 # alias chmod commands
 alias mx='chmod a+x'
 alias 000='chmod -R 000'
