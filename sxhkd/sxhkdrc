@@ -1,8 +1,9 @@
 super + w
         $BROWSER
 
-super + v
-        $TERMINAL -e vim
+super + e
+        /opt/JetBrains-Rider-2025.1/bin/rider.sh
+
 
 super + d
         dmenu_run
@@ -11,7 +12,7 @@ Print
         maim -u -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
 
 super + S
-	dbeaver
+	      dbeaver
 
 ctrl + Print
         maim -s | xclip -selection clipboard -t image/png
@@ -22,6 +23,9 @@ super + Print
 super + p
         mpv $(xclip -o)
 
+super + i
+      	ILSpy
+
 super + Return
         $TERMINAL
 
@@ -29,16 +33,19 @@ super + s
         center-term.sh
 
 super + {equal, minus, BackSpace}
-    	volume.sh {up, down, toggle}
+    	  volume.sh {up, down, toggle}
 
 super + m
         $HOME/.local/bin/mount.sh
 
+super + t
+        /opt/tor-browser/launch_tor.sh
+
 ctrl + shift 1
-	connect_soundcore.sh
+      	connect_soundcore.sh
 
 ctrl + shift 2
-	connect_huawei.sh
+      	connect_huawei.sh
 
 super + shift + BackSpace
         $HOME/.local/bin/exit.sh
@@ -52,15 +59,14 @@ super + n
 super + z
         sleep.sh
 
-super + r
-        rawtherapee
-
 super + c
         code
 
 super + o
         mypaint
 
+super + r
+        /opt/Postman/Postman
 alt + w
         connect_wifi.sh
 
