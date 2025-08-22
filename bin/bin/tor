@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Prints if the tor service is enabled or not (Void Linux with runit)
+
+TOR_ENABLED='ﴣ'
+TOR_DISABLED=''
+
+get_tor() {
+    if sv status tor 2>/dev/null | grep -q '^run'; then
+        echo "$TOR_ENABLED"
+    else
+        echo "$TOR_DISABLED"
+    fi
+}
+
+get_tor
+
