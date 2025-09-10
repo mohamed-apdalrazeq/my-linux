@@ -1,9 +1,12 @@
 setxkbmap -layout us,ara -variant ,digits -option grp:sclk_toggle caps:escape
-##.config/slstatus/slstatus &
-##xscreensaver -no-splash &
- betterlockscreen -u ~/my-pictures/wallpapers/2.png
-feh --bg-scale ~/my-pictures/wallpapers/7.png &
+feh --bg-scale ~/my-pictures/wallpapers/10.png &
 dwmblocks &
-##xscreensaver -nosplash &
+
+xautolock \
+  -time 30 \
+  -locker "sleep.sh" \
+  -killtime 60 \
+  -killer "doas -n shutdown -h now" &
+
 sxhkd &
 dwm
